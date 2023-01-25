@@ -11,6 +11,6 @@ output "s3_bucket_endpoint" {
 }
 
 output "tls" {
-  value = tls_private_key.instancessh.private_key_pem
+  value = tls_private_key.instancessh.private_key_openssh
   sensitive = true
 }

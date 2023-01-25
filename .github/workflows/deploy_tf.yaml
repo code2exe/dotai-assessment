@@ -48,7 +48,7 @@ jobs:
     - name: Set up SSH key
       uses: shimataro/ssh-key-action@v2
       with:
-        private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: SSH into Virtual Machine
       uses: appleboy/ssh-action@master

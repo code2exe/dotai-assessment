@@ -51,6 +51,13 @@ jobs:
       id: print_output
       run: |
         echo "${{ env.ip }}"
+    
+    - name: Create Secret
+      uses: gliech/create-github-secret-action@v1
+      with:
+        name: HOST
+        value: ${{ env.ip }}
+        pa_token: ${{ secrets.GITHUB_TOKEN }}
   
     # - name: SSH into Virtual Machine
     #   id: ssh
@@ -64,17 +71,12 @@ jobs:
     #       echo "Successfully connected to the virtual machine"
     #       sudo apt-get update
 
-    - name: SSH VM
-      uses: garygrossgarten/github-action-ssh@release
-      with:
-        command: |
-          sudo apt update
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        # passphrase: ${{ secrets.PASSPHRASE }}
-        privateKey: ${{ secrets.PRIVATE_KEY }}
-
-    # - name: Set up SSH key
-    #   uses: shimataro/ssh-key-action@v2
+    # - name: SSH VM
+    #   uses: garygrossgarten/github-action-ssh@release
     #   with:
-    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     command: |
+    #       sudo apt update
+    #     host: ${{ secrets.HOST }}
+    #     username: ${{ secrets.USER }}
+    #     # passphrase: ${{ secrets.PASSPHRASE }}
+    #     privateKey: ${{ secrets.PRIVATE_KEY }}

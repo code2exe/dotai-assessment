@@ -46,14 +46,12 @@ jobs:
         export IP_ADDRESS=$(terraform output instance_ip_addr)
         echo "The IP address is: $IP_ADDRESS"
         echo "::set-output name=host::$IP_ADDRESS"
-        # export SSH_PRIVATE_KEY=$(terraform output tls)
-        # echo "The SSH Key is: $SSH_PRIVATE_KEY"
-        # echo "::set-output name=key::$SSH_PRIVATE_KEY"
 
     - name: Print output and create environment variable
       run: |
         echo "Output variable: ${{ steps.get_output.outputs.host }}"
         echo "Output variable: ${{ secrets.SSH_PRIVATE_KEY }}"
+        echo "Output variable: ${{ secrets.PRIVATE_KEY }}"
         ls
 
     - name: SSH into Virtual Machine
@@ -61,7 +59,7 @@ jobs:
       with:
         host: ${{ steps.get_output.outputs.host }}
         username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ secrets.PRIVATE_KEY }}
         script: |
           echo "Successfully connected to the virtual machine"
           sudo apt-get update

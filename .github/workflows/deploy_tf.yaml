@@ -49,6 +49,7 @@ jobs:
       run: |
         export IP_ADDRESS=$(terraform output instance_ip_addr)
         echo "The IP address is: $IP_ADDRESS"
+        echo "::set-output name=host::$IP_ADDRESS"
 
     # - name: Create Secret
     #   env:
@@ -58,17 +59,16 @@ jobs:
     #     echo "::set-output name=secret_value::$IP_ADDRESS"
     #     echo "Creating secret..."
 
-    # - name: SSH into Virtual Machine
-    #   env:
-    #     IP_ADDRESS: ${{ env.IP_ADDRESS }}
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ env. }}
-    #     username: ${{ secrets.USER }}
-    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-    #     script: |
-    #       echo "Successfully connected to the virtual machine"
-    #       sudo apt-get update
+    - name: SSH into Virtual Machine
+
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ steps.create_secret.outputs.host }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          echo "Successfully connected to the virtual machine"
+          sudo apt-get update
 
     # - name: Create GitHub Secret Action
     #   env:

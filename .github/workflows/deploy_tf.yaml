@@ -38,3 +38,9 @@ jobs:
     - name: Terraform Apply
       run: |
         terraform apply -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=ami-04bad3c587fe60d89' -auto-approve
+
+
+    - name: Get output
+      run: |
+        export IP_ADDRESS=$(terraform output instance_ip_addr)
+        echo "The IP address is: $IP_ADDRESS"

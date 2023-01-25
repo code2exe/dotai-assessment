@@ -12,6 +12,7 @@ env:
     EC2_AMI:   ${{ secrets.EC2_AMI }}
     NAMESPACE: ${{ secrets.NAMESPACE }}
     USER: ${{ secrets.USER }}
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     # VPC_CIDR_BLOCK: ${{ secrets.VPC_CIDR_BLOCK }}
     # VPC_SUBNET_CIDR: ${{ secrets.VPC_SUBNET_CIDR }}
 jobs:
@@ -39,8 +40,22 @@ jobs:
       run: |
         terraform apply -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=ami-04bad3c587fe60d89' -auto-approve
 
-
     - name: Get output
       run: |
         export IP_ADDRESS=$(terraform output instance_ip_addr)
         echo "The IP address is: $IP_ADDRESS"
+
+    - name: Set up SSH key
+      uses: shimataro/ssh-keys@v1
+      with:
+        private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: SSH into Virtual Machine
+      uses: appleboy/ssh-action@v1
+      with:
+        host: $(terraform output instance_ip_addr)
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          echo "Successfully connected to the virtual machine"
+          sudo apt-get update

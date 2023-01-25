@@ -34,7 +34,7 @@ jobs:
 
     - name: Terraform Plan
       run: |
-        TF_LOG=DEBUG terraform plan -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}'
+        terraform plan -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}'
 
     - name: Terraform Apply
       run: |
@@ -52,16 +52,29 @@ jobs:
         echo "::set-output name=secret_name::HOST"
         echo "::set-output name=secret_value::$IP_ADDRESS"
         echo "Creating secret..."
+        echo $HOST
 
-    - name: Create GitHub Secret Action
-      env:
-        TOKEN: ${{ secrets.GIT_TOKEN }}
-      uses: gliech/create-github-secret-action@v1.4.10
-      with:
-        location: code2exe/dotai-assessment
-        name: ${{ steps.create_secret.outputs.secret_name }}
-        value: ${{ steps.create_secret.outputs.secret_value }}
-        pa_token: $TOKEN
+    # - name: SSH into Virtual Machine
+    #   env:
+    #     IP_ADDRESS: ${{ env.IP_ADDRESS }}
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ env. }}
+    #     username: ${{ secrets.USER }}
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     script: |
+    #       echo "Successfully connected to the virtual machine"
+    #       sudo apt-get update
+
+    # - name: Create GitHub Secret Action
+    #   env:
+    #     TOKEN: ${{ secrets.GIT_TOKEN }}
+    #   uses: gliech/create-github-secret-action@v1.4.10
+    #   with:
+    #     location: code2exe/dotai-assessment
+    #     name: ${{ steps.create_secret.outputs.secret_name }}
+    #     value: ${{ steps.create_secret.outputs.secret_value }}
+    #     pa_token: $TOKEN
     
     # - name: Create Action secrets
     #   uses: hmanzur/actions-set-secret@v2.0.0

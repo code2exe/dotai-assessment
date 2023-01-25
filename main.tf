@@ -114,14 +114,19 @@ resource "aws_network_acl" "acl" {
 }
 
 
-resource "tls_private_key" "instancessh" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
+# resource "tls_private_key" "instancessh" {
+#   algorithm = "RSA"
+#   rsa_bits  = 4096
+# }
 
-resource "aws_key_pair" "deployer" {
-  key_name   = "dot"
-  public_key = tls_private_key.instancessh.public_key_openssh
+# resource "aws_key_pair" "deployer" {
+#   key_name   = "dot"
+#   public_key = tls_private_key.instancessh.public_key_openssh
+# }
+
+data "aws_key_pair" "dot" {
+  key_name = "dot"
+  include_public_key = true
 }
 
 # AWS Instance
@@ -134,17 +139,17 @@ resource "aws_instance" "instance" {
   vpc_security_group_ids = [aws_security_group.default.id]
   subnet_id              = aws_subnet.subnet.id
   associate_public_ip_address = true
-  key_name = aws_key_pair.deployer.key_name
-  provisioner "remote-exec" {
-   inline = [
-    "sudo apt-get update && sudo apt-get install -y make build-essential ruby-full && sudo gem install jekyll --version='~> 4.2.0'",
-   ] 
-  }
-  connection {
-    user = var.user
-    private_key = tls_private_key.instancessh.private_key_pem
-    host = self.public_ip
-  }
+  key_name = data.aws_key_pair.dot.key_name
+#   provisioner "remote-exec" {
+#    inline = [
+#     "sudo apt-get update && sudo apt-get install -y make build-essential ruby-full && sudo gem install jekyll --version='~> 4.2.0'",
+#    ] 
+#   }
+#   connection {
+#     user = var.user
+#     private_key = tls_private_key.instancessh.private_key_pem
+#     host = self.public_ip
+#   }
   
   
   tags = {
@@ -181,16 +186,4 @@ resource "aws_s3_bucket_website_configuration" "jekyll_bucket_website" {
   error_document {
     key = "error.html"
   }
-}
-
-
-
-data "github_actions_public_key" "public_key" {
-  repository = var.repository
-}
-
-resource "github_actions_secret" "secret" {
-  repository       = var.repository
-  secret_name      = "SSH_PRIVATE_KEY"
-  plaintext_value  = tls_private_key.instancessh.private_key_pem
 }

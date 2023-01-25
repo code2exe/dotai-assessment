@@ -1,7 +1,3 @@
-provider "github" {
-    token = var.github_token
-  
-}
 # Configure the AWS Provider
 provider "aws" {
   # access_key = var.aws_access_key

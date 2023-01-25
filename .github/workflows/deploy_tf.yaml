@@ -43,6 +43,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
+        TOKEN: ${{ secrets.TOKEN }}
       run: |
         TF_LOG=DEBUG terraform plan -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}' -var 'github_token=${TOKEN}' -var 'repository=${REPOSITORY}'
 

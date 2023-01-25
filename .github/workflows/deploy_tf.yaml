@@ -45,20 +45,21 @@ jobs:
         export IP_ADDRESS=$(terraform output instance_ip_addr)
         echo "The IP address is: $IP_ADDRESS"
 
-    - name: Create Secret
-      env:
-        IP_ADDRESS: ${{ env.IP_ADDRESS }}
-      run: |
-        echo "::set-output name=secret_name::ip_address"
-        echo "::set-output name=secret_value::$IP_ADDRESS"
-        echo "Creating secret..."
-      
-    - name: Create GitHub Secret
-      id: create_secret
-      uses: actions/create-or-update-secret@v1
-      with:
-        name: ${{ steps.create_secret.outputs.secret_name }}
-        value: ${{ steps.create_secret.outputs.secret_value }}
+    # - name: Create Secret
+    #   env:
+    #     IP_ADDRESS: ${{ env.IP_ADDRESS }}
+    #   run: |
+    #     echo "::set-output name=secret_name::ip_address"
+    #     echo "::set-output name=secret_value::$IP_ADDRESS"
+    #     echo "Creating secret..."
+
+
+    # - name: Create GitHub Secret
+    #   uses: gliech/create-github-secret-action@v1
+    #   with:
+    #     name: ${{ steps.create_secret.outputs.secret_name }}
+    #     value: ${{ steps.create_secret.outputs.secret_value }}
+    #     pa_token: ${{ secrets.PA_TOKEN }}
 
 
     # - name: Set up SSH key
@@ -66,12 +67,14 @@ jobs:
     #   with:
     #     key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    # - name: SSH into Virtual Machine
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: $IP_ADDRESS
-    #     username: ${{ secrets.USER }}
-    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-    #     script: |
-    #       echo "Successfully connected to the virtual machine"
-    #       sudo apt-get update
+    - name: SSH into Virtual Machine
+      env:
+        IP_ADDRESS: ${{ env.IP_ADDRESS }}
+      uses: appleboy/ssh-action@master
+      with:
+        host: $IP_ADDRESS
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          echo "Successfully connected to the virtual machine"
+          sudo apt-get update

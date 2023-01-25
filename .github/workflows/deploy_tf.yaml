@@ -68,7 +68,7 @@ jobs:
       with:
         host: ${{ steps.create_secret.outputs.host }}
         username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ steps.create_secret.outputs.key }}
         script: |
           echo "Successfully connected to the virtual machine"
           sudo apt-get update

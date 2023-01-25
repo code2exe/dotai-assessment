@@ -69,7 +69,7 @@ jobs:
       with:
         command: |
           sudo apt update
-        host: ${{ env.ip }}
+        host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
         # passphrase: ${{ secrets.PASSPHRASE }}
         privateKey: ${{ secrets.PRIVATE_KEY }}

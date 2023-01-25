@@ -44,7 +44,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
       run: |
-        TF_LOG=TRACE terraform plan -var 'namespace=${NAMESPACE}' -var 'vpc_cidr_block=${VPC_CIDR_BLOCK}' -var 'vpc_subnet_cidr=${VPC_SUBNET_CIDR}' -var 'aws_secret_key=${AWS_SECRET_ACCESS_KEY}' -var 'aws_access_key=${AWS_ACCESS_KEY_ID}' -var 'aws_region=${AWS_REGION}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}' -var 'github_token=${TOKEN}' -var 'repository=${REPOSITORY}'
+        TF_LOG=DEBUG terraform plan -var 'namespace=${NAMESPACE}' -var 'vpc_cidr_block=${VPC_CIDR_BLOCK}' -var 'vpc_subnet_cidr=${VPC_SUBNET_CIDR}' -var 'aws_secret_key=${AWS_SECRET_ACCESS_KEY}' -var 'aws_access_key=${AWS_ACCESS_KEY_ID}' -var 'aws_region=${AWS_REGION}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}' -var 'github_token=${TOKEN}' -var 'repository=${REPOSITORY}'
 
     # - name: Terraform Apply
     #   run: |

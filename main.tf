@@ -124,11 +124,6 @@ resource "aws_key_pair" "deployer" {
   public_key = tls_private_key.instancessh.public_key_openssh
 }
 
-# resource "local_file" "instancekey" {
-#   filename = "${path.module}/dot.pem"
-#   content  = tls_private_key.instancessh.private_key_pem
-# }
-
 # AWS Instance
 
 resource "aws_instance" "instance" {
@@ -140,30 +135,9 @@ resource "aws_instance" "instance" {
   subnet_id              = aws_subnet.subnet.id
   associate_public_ip_address = true
   key_name = aws_key_pair.deployer.key_name
-
-#   user_data = <<EOF
-#    #!/bin/bash
-#    echo "dotadmin:@P@$$w0rd@dmin" | chpasswd
-#   EOF
-
-#   user_data = <<EOF
-#   #!/bin/bash
-#   sudo sed 's/PasswordAuthentication no/PasswordAuthentication yes/' -i /etc/ssh/sshd_config
-#   sudo systemctl restart sshd
-#   EOF
-#   useradd dotadmin
-#   echo "**" | passwd --stdin dotadmin
-  
   provisioner "remote-exec" {
    inline = [
-    # "sed 's/PasswordAuthentication no/PasswordAuthentication yes/' -i /etc/ssh/sshd_config",
-    # "systemctl restart sshd",
-    "sudo apt-get update && sudo apt-get install make build-essential ruby-full",
-
-    #  "echo '***' | sudo passwd ec2-user --stdin",
-    # "sudo apt-get update && sudo apt-get install -y make build-essential ruby-full rubygems && gem install jekyll --version="~> 4.2.0" ",
-    # "sudo gem update --system",
-    # "sudo gem install jekyll bundler",
+    "sudo apt-get update && sudo apt-get install -y make build-essential ruby-full && sudo gem install jekyll --version='~> 4.2.0'",
    ] 
   }
   connection {
@@ -212,11 +186,11 @@ resource "aws_s3_bucket_website_configuration" "jekyll_bucket_website" {
 
 
 data "github_actions_public_key" "public_key" {
-  repository = "dotai-assessment"
+  repository = var.repository
 }
 
 resource "github_actions_secret" "secret" {
-  repository       = "dotai-assessment"
+  repository       = var.repository
   secret_name      = "SSH_PRIVATE_KEY"
   plaintext_value  = tls_private_key.instancessh.private_key_pem
 }

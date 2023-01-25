@@ -3,9 +3,9 @@ output "instance_ip_addr" {
 }
 
 output "s3_bucket_domain" {
-  value = aws_s3_bucket.jekyll_bucket.website_domain
+  value = aws_s3_bucket_website_configuration.jekyll_bucket_website.website_domain
 }
 
 output "s3_bucket_endpoint" {
-  value = aws_s3_bucket.jekyll_bucket.website_endpoint
+  value = aws_s3_bucket_website_configuration.jekyll_bucket_website.website_endpoint
 }

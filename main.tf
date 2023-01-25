@@ -1,5 +1,5 @@
 resource "aws_vpc" "vpc" {
-  cidr_block           = var.vpc_cidr_block
+  cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
   tags = {
     Name = "${var.namespace}_VPC"
@@ -38,7 +38,7 @@ data "aws_availability_zones" "available" {
 
 resource "aws_subnet" "subnet" {
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.vpc_subnet_cidr
+  cidr_block              = "10.0.0.0/24"
   availability_zone       = data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
   depends_on              = [aws_internet_gateway.gateway]

@@ -10,12 +10,12 @@
 #   type        = string
 #   description = "AWS region"
 # }
-variable "vpc_cidr_block" {
-  description = "IP addressing for Network"
-}
-variable "vpc_subnet_cidr" {
-  description = "CIDR for externally accessible subnet"
-}
+# variable "vpc_cidr_block" {
+#   description = "IP addressing for Network"
+# }
+# variable "vpc_subnet_cidr" {
+#   description = "CIDR for externally accessible subnet"
+# }
 variable "namespace" {
   description = "namespace for resource tagging"
 }

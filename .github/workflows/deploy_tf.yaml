@@ -1,4 +1,4 @@
-name: Deploy Terraform
+name: Deploy Infrastructure with Terraform
 
 on:
   push:
@@ -11,7 +11,6 @@ env:
     AWS_REGION: ${{ secrets.AWS_REGION }}
     EC2_AMI:   ${{ secrets.EC2_AMI }}
     NAMESPACE: ${{ secrets.NAMESPACE }}
-    REPOSITORY: ${{ secrets.REPOSITORY }}
     USER: ${{ secrets.USER }}
     # VPC_CIDR_BLOCK: ${{ secrets.VPC_CIDR_BLOCK }}
     # VPC_SUBNET_CIDR: ${{ secrets.VPC_SUBNET_CIDR }}
@@ -34,8 +33,8 @@ jobs:
 
     - name: Terraform Plan
       run: |
-        TF_LOG=DEBUG terraform plan -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}' -var 'repository=${REPOSITORY}'
+        TF_LOG=DEBUG terraform plan -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}'
 
-    # - name: Terraform Apply
-    #   run: |
-    #     terraform apply -var-file=production.tfvars -auto-approve
+    - name: Terraform Apply
+      run: |
+        terraform apply -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI} -auto-approve

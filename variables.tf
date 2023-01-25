@@ -29,6 +29,6 @@ variable "user" {
 # variable "github_token" {
 #   description = "Token for GitHub"
 # }
-variable "repository" {
-  description = "GitHub repo"
-}
+# variable "repository" {
+#   description = "GitHub repo"
+# }

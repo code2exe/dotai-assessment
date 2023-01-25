@@ -49,10 +49,15 @@ jobs:
       env:
         IP_ADDRESS: ${{ env.IP_ADDRESS }}
       run: |
-        echo "::set-output name=secret_name::HOST"
-        echo "::set-output name=secret_value::$IP_ADDRESS"
-        echo "Creating secret..."
-        echo $IP_ADDRESS
+        echo "The IP address is: $IP_ADDRESS"
+        
+    # - name: Create Secret
+    #   env:
+    #     IP_ADDRESS: ${{ env.IP_ADDRESS }}
+    #   run: |
+    #     echo "::set-output name=secret_name::HOST"
+    #     echo "::set-output name=secret_value::$IP_ADDRESS"
+    #     echo "Creating secret..."
 
     # - name: SSH into Virtual Machine
     #   env:

@@ -58,7 +58,7 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         # host: ${{ steps.get_output.outputs.ip }}
-        host: "34.209.240.177"
+        host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
         key: ${{ secrets.PRIVATE_KEY }}
         script: |

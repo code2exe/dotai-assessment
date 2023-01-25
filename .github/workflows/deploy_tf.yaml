@@ -13,8 +13,6 @@ env:
     NAMESPACE: ${{ secrets.NAMESPACE }}
     USER: ${{ secrets.USER }}
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    # VPC_CIDR_BLOCK: ${{ secrets.VPC_CIDR_BLOCK }}
-    # VPC_SUBNET_CIDR: ${{ secrets.VPC_SUBNET_CIDR }}
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -46,37 +44,21 @@ jobs:
         export IP_ADDRESS=$(terraform output instance_ip_addr)
         echo "The IP address is: $IP_ADDRESS"
         echo "ip=$IP_ADDRESS" >> $GITHUB_ENV
-
-    - name: Print output and create environment variable
-      id: print_output
-      run: |
-        echo "${{ env.ip }}"
     
-    - name: Create Secret
+    - name: Create GitHub Actions Secret
       uses: gliech/create-github-secret-action@v1
       with:
         name: HOST
         value: ${{ env.ip }}
         pa_token: ${{ secrets.GIT_TOKEN }}
   
-    # - name: SSH into Virtual Machine
-    #   id: ssh
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     # host: ${{ steps.get_output.outputs.ip }}
-    #     host: ${{ env.ip }}
-    #     username: ${{ secrets.USER }}
-    #     key: ${{ secrets.PRIVATE_KEY }}
-    #     script: |
-    #       echo "Successfully connected to the virtual machine"
-    #       sudo apt-get update
-
-    # - name: SSH VM
-    #   uses: garygrossgarten/github-action-ssh@release
-    #   with:
-    #     command: |
-    #       sudo apt update
-    #     host: ${{ secrets.HOST }}
-    #     username: ${{ secrets.USER }}
-    #     # passphrase: ${{ secrets.PASSPHRASE }}
-    #     privateKey: ${{ secrets.PRIVATE_KEY }}
+    - name: SSH into Virtual Machine
+      id: ssh
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        script: |
+          echo "Successfully connected to the virtual machine"
+          sudo apt-get update

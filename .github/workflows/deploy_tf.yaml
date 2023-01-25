@@ -53,7 +53,7 @@ jobs:
     - name: SSH into Virtual Machine
       uses: appleboy/ssh-action@master
       with:
-        host: $(terraform output instance_ip_addr)
+        host: $IP_ADDRESS
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |

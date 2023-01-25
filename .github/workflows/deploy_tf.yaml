@@ -50,6 +50,9 @@ jobs:
         export IP_ADDRESS=$(terraform output instance_ip_addr)
         echo "The IP address is: $IP_ADDRESS"
         echo "::set-output name=host::$IP_ADDRESS"
+        export SSH_PRIVATE_KEY=$(terraform output tls)
+        echo "The SSH Key is: $SSH_PRIVATE_KEY"
+        echo "::set-output name=key::$SSH_PRIVATE_KEY"
 
     # - name: Create Secret
     #   env:

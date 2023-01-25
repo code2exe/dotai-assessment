@@ -52,7 +52,7 @@ jobs:
         echo "::set-output name=secret_name::HOST"
         echo "::set-output name=secret_value::$IP_ADDRESS"
         echo "Creating secret..."
-        echo $HOST
+        echo $IP_ADDRESS
 
     # - name: SSH into Virtual Machine
     #   env:

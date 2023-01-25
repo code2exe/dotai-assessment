@@ -54,16 +54,17 @@ jobs:
       run: |
         echo "Output variable: ${{ steps.get_output.outputs.host }}"
         echo "Output variable: ${{ steps.get_output.outputs.key }}"
+        ssh -i dot.pem ${{ secrets.USER }}@${{ steps.get_output.outputs.host }}
 
-    - name: SSH into Virtual Machine
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ steps.get_output.outputs.host }}
-        username: ${{ secrets.USER }}
-        key: ${{ steps.get_output.outputs.key }}
-        script: |
-          echo "Successfully connected to the virtual machine"
-          sudo apt-get update
+    # - name: SSH into Virtual Machine
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ steps.get_output.outputs.host }}
+    #     username: ${{ secrets.USER }}
+    #     key: ${{ steps.get_output.outputs.key }}
+    #     script: |
+    #       echo "Successfully connected to the virtual machine"
+    #       sudo apt-get update
 
     # - name: Create GitHub Secret Action
     #   env:

@@ -124,6 +124,11 @@ resource "aws_key_pair" "deployer" {
   public_key = tls_private_key.instancessh.public_key_openssh
 }
 
+resource "local_file" "instancekey" {
+  filename = "${path.module}/dot.pem"
+  content  = tls_private_key.instancessh.private_key_pem
+}
+
 # data "aws_key_pair" "dot" {
 #   key_name = "dot"
 #   include_public_key = true

@@ -19,16 +19,17 @@ jobs:
         unzip terraform_1.3.7_linux_amd64.zip
         sudo mv terraform /usr/local/bin/
 
-    - name: Configure remote state
-      run: |
-        terraform init -backend-config="access_key=${secrets.AWS_ACCESS_KEY_ID}" -backend-config="secret_key=${secrets.AWS_SECRET_ACCESS_KEY}" -backend-config="bucket=${secrets.TF_STATE_BUCKET}" -backend-config="region=${secrets.AWS_REGION}" -backend-config="path=tf.tfstate"
-      
     # - name: Configure remote state
     #   run: |
-    #     terraform init
-    # - name: Terraform Plan
-    #   run: |
-    #     terraform plan -var-file=production.tfvars
+    #     terraform init -backend-config="access_key=${secrets.AWS_ACCESS_KEY_ID}" -backend-config="secret_key=${secrets.AWS_SECRET_ACCESS_KEY}" -backend-config="bucket=${secrets.TF_STATE_BUCKET}" -backend-config="region=${secrets.AWS_REGION}" -backend-config="path=tf.tfstate"
+      
+    - name: Configure remote state
+      run: |
+        terraform init
+
+    - name: Terraform Plan
+      run: |
+        terraform plan
 
     # - name: Terraform Apply
     #   run: |

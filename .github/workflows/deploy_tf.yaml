@@ -53,6 +53,7 @@ jobs:
     - name: Print output and create environment variable
       run: |
         echo "Output variable: ${{ steps.get_output.outputs.host }}"
+        echo "Output variable: ${{ steps.get_output.outputs.key }}"
 
     - name: SSH into Virtual Machine
       uses: appleboy/ssh-action@master

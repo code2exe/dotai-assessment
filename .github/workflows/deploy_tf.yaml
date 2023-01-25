@@ -57,8 +57,8 @@ jobs:
     - name: SSH into Virtual Machine
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ int(steps.get_output.outputs.ip) }}
-        # host: 34.209.240.177
+        # host: ${{ steps.get_output.outputs.ip }}
+        host: "34.209.240.177"
         username: ${{ secrets.USER }}
         key: ${{ secrets.PRIVATE_KEY }}
         script: |

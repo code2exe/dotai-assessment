@@ -57,7 +57,7 @@ jobs:
       with:
         name: HOST
         value: ${{ env.ip }}
-        pa_token: ${{ secrets.GITHUB_TOKEN }}
+        pa_token: ${{ secrets.GIT_TOKEN }}
   
     # - name: SSH into Virtual Machine
     #   id: ssh

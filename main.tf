@@ -140,16 +140,16 @@ resource "aws_instance" "instance" {
   subnet_id              = aws_subnet.subnet.id
   associate_public_ip_address = true
   key_name = aws_key_pair.deployer.key_name
-  provisioner "remote-exec" {
-   inline = [
-    "sudo apt-get update && sudo apt-get install -y make build-essential ruby-full && sudo gem install jekyll --version='~> 4.2.0'",
-   ] 
-  }
-  connection {
-    user = var.user
-    private_key = tls_private_key.instancessh.private_key_pem
-    host = self.public_ip
-  }
+#   provisioner "remote-exec" {
+#    inline = [
+#     "sudo apt-get update && sudo apt-get install -y make build-essential ruby-full && sudo gem install jekyll --version='~> 4.2.0'",
+#    ] 
+#   }
+#   connection {
+#     user = var.user
+#     private_key = tls_private_key.instancessh.private_key_pem
+#     host = self.public_ip
+#   }
   
   
   tags = {

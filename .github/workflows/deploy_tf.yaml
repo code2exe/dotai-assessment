@@ -37,4 +37,4 @@ jobs:
 
     - name: Terraform Apply
       run: |
-        terraform apply -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}' -auto-approve
+        terraform apply -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=ami-04bad3c587fe60d89' -auto-approve

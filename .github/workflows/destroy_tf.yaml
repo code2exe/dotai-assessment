@@ -29,4 +29,4 @@ jobs:
         terraform init -backend-config="access_key=${AWS_ACCESS_KEY_ID}" -backend-config="secret_key=${AWS_SECRET_ACCESS_KEY}" -backend-config="bucket=${TF_STATE_BUCKET}" -backend-config="region=${AWS_REGION}"
     - name: Terraform Destroy
       run: |
-        terraform destroy -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}'' -auto-approve
+        terraform destroy -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}' -auto-approve

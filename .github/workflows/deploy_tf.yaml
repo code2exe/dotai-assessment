@@ -58,6 +58,7 @@ jobs:
         TOKEN: ${{ secrets.GIT_TOKEN }}
       uses: gliech/create-github-secret-action@v1.4.10
       with:
+        location: code2exe/dotai-assessment
         name: ${{ steps.create_secret.outputs.secret_name }}
         value: ${{ steps.create_secret.outputs.secret_value }}
         pa_token: $TOKEN

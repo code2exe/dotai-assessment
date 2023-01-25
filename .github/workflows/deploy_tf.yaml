@@ -30,7 +30,7 @@ jobs:
         sudo mv terraform /usr/local/bin/
     - name: Configure remote state
       run: |
-        terraform init -backend-config="access_key=${AWS_ACCESS_KEY_ID}" -backend-config="secret_key=${AWS_SECRET_ACCESS_KEY}" -backend-config="bucket=${TF_STATE_BUCKET}" -backend-config="region=${AWS_REGION} -upgrade"
+        terraform init -backend-config="access_key=${AWS_ACCESS_KEY_ID}" -backend-config="secret_key=${AWS_SECRET_ACCESS_KEY}" -backend-config="bucket=${TF_STATE_BUCKET}" -backend-config="region=${AWS_REGION}"
 
     - name: Terraform Plan
       run: |

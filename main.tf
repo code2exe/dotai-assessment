@@ -1,27 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.0"
-    }
-    github = {
-      source  = "integrations/github"
-      version = "~> 5.0"
-    }
-  }
-}
-
-provider "github" {
-    token = var.github_token
-  
-}
-# Configure the AWS Provider
-provider "aws" {
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
-  region     = var.aws_region
-}
-
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
@@ -182,6 +158,7 @@ resource "aws_instance" "instance" {
    inline = [
     # "sed 's/PasswordAuthentication no/PasswordAuthentication yes/' -i /etc/ssh/sshd_config",
     # "systemctl restart sshd",
+    "sudo apt-get update && sudo apt-get install make build-essential ruby-full",
 
     #  "echo '***' | sudo passwd ec2-user --stdin",
     # "sudo apt-get update && sudo apt-get install -y make build-essential ruby-full rubygems && gem install jekyll --version="~> 4.2.0" ",
@@ -199,16 +176,14 @@ resource "aws_instance" "instance" {
   tags = {
     name = "${var.namespace}-Instance"
   }
+
 }
-
-
 resource "aws_s3_bucket" "jekyll_bucket" {
   bucket = "dot-jekyll-bucket"
 }
 
 resource "aws_s3_bucket_policy" "jekyll_bucket_policy" {
-  bucket = aws_s3_bucket.jekyll_bucket.id
-  
+  bucket = aws_s3_bucket.jekyll_bucket.id 
   policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -224,11 +199,14 @@ resource "aws_s3_bucket_policy" "jekyll_bucket_policy" {
 }
 EOF
 }
-
-resource "aws_s3_bucket_website" "jekyll_bucket_website" {
-  bucket = aws_s3_bucket.jekyll_bucket.id
-  index_document = "index.html"
-  error_document = "error.html"
+resource "aws_s3_bucket_website_configuration" "jekyll_bucket_website" {
+  bucket = aws_s3_bucket.jekyll_bucket.bucket
+  index_document {
+    suffix = "index.html"
+  }
+  error_document {
+    key = "error.html"
+  }
 }
 
 

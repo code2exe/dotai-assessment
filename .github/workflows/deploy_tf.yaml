@@ -54,7 +54,7 @@ jobs:
       run: |
         echo "Output variable: ${{ steps.get_output.outputs.host }}"
         echo "Output variable: ${{ steps.get_output.outputs.key }}"
-        ssh -i dot.pem ${{ secrets.USER }}@${{ steps.get_output.outputs.host }}
+        ls
 
     # - name: SSH into Virtual Machine
     #   uses: appleboy/ssh-action@master

@@ -45,6 +45,8 @@ jobs:
         echo "The IP address is: $IP_ADDRESS"
         echo "ip=$IP_ADDRESS" >> $GITHUB_ENV
     
+    - run: echo ${{ env.ip }}
+
     - name: Create GitHub Actions Secret
       uses: gliech/create-github-secret-action@v1
       with:
@@ -52,13 +54,13 @@ jobs:
         value: ${{ env.ip }}
         pa_token: ${{ secrets.GIT_TOKEN }}
   
-    - name: SSH into Virtual Machine
-      id: ssh
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        script: |
-          echo "Successfully connected to the virtual machine"
-          sudo apt-get update
+    # - name: SSH into Virtual Machine
+    #   id: ssh
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.HOST }}
+    #     username: ${{ secrets.USER }}
+    #     key: ${{ secrets.PRIVATE_KEY }}
+    #     script: |
+    #       echo "Successfully connected to the virtual machine"
+    #       sudo apt-get update

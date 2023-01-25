@@ -51,21 +51,28 @@ jobs:
       id: print_output
       run: |
         echo "${{ env.ip }}"
-        
   
-    - name: SSH into Virtual Machine
-      id: ssh
-      uses: appleboy/ssh-action@master
+    # - name: SSH into Virtual Machine
+    #   id: ssh
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     # host: ${{ steps.get_output.outputs.ip }}
+    #     host: ${{ env.ip }}
+    #     username: ${{ secrets.USER }}
+    #     key: ${{ secrets.PRIVATE_KEY }}
+    #     script: |
+    #       echo "Successfully connected to the virtual machine"
+    #       sudo apt-get update
+
+    - name: SSH VM
+      uses: garygrossgarten/github-action-ssh@release
       with:
-        # host: ${{ steps.get_output.outputs.ip }}
+        command: |
+          sudo apt update
         host: ${{ env.ip }}
         username: ${{ secrets.USER }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        script: |
-          echo "Successfully connected to the virtual machine"
-          sudo apt-get update
-
-  
+        # passphrase: ${{ secrets.PASSPHRASE }}
+        privateKey: ${{ secrets.PRIVATE_KEY }}
 
     # - name: Set up SSH key
     #   uses: shimataro/ssh-key-action@v2

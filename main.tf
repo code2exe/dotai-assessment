@@ -114,25 +114,25 @@ resource "aws_network_acl" "acl" {
 }
 
 
-resource "tls_private_key" "instancessh" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
-resource "aws_key_pair" "deployer" {
-  key_name   = "dotter"
-  public_key = tls_private_key.instancessh.public_key_openssh
-}
-
-resource "local_file" "instancekey" {
-  filename = "${path.module}/dot.pem"
-  content  = tls_private_key.instancessh.private_key_pem
-}
-
-# data "aws_key_pair" "dot" {
-#   key_name = "dot"
-#   include_public_key = true
+# resource "tls_private_key" "instancessh" {
+#   algorithm = "RSA"
+#   rsa_bits  = 4096
 # }
+
+# resource "aws_key_pair" "deployer" {
+#   key_name   = "dotter"
+#   public_key = tls_private_key.instancessh.public_key_openssh
+# }
+
+# resource "local_file" "instancekey" {
+#   filename = "${path.module}/dot.pem"
+#   content  = tls_private_key.instancessh.private_key_pem
+# }
+
+data "aws_key_pair" "dot" {
+  key_name = "dot"
+  include_public_key = true
+}
 
 # AWS Instance
 
@@ -144,8 +144,8 @@ resource "aws_instance" "instance" {
   vpc_security_group_ids = [aws_security_group.default.id]
   subnet_id              = aws_subnet.subnet.id
   associate_public_ip_address = true
-#   key_name = data.aws_key_pair.dot.key_name
-  key_name = aws_key_pair.deployer.key_name
+  key_name = data.aws_key_pair.dot.key_name
+#   key_name = aws_key_pair.deployer.key_name
 #   provisioner "remote-exec" {
 #    inline = [
 #     "sudo apt-get update && sudo apt-get install -y make build-essential ruby-full && sudo gem install jekyll --version='~> 4.2.0'",

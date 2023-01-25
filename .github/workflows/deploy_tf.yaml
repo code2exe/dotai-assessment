@@ -40,7 +40,7 @@ jobs:
 
     - name: Terraform Plan
       run: |
-        terraform plan
+        terraform plan -var 'namespace=${NAMESPACE}' -var 'vpc_cidr_block=${VPC_CIDR_BLOCK}' -var 'vpc_subnet_cidr=${VPC_SUBNET_CIDR}' -var 'aws_secret_key=${AWS_SECRET_ACCESS_KEY}' -var 'aws_access_key=${AWS_ACCESS_KEY_ID}' -var 'region=${AWS_REGION}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}' -var 'token=${TOKEN}' -var 'repository=${REPOSITORY}'
 
     # - name: Terraform Apply
     #   run: |

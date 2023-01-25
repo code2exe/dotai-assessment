@@ -50,36 +50,19 @@ jobs:
         echo "The SSH Key is: $SSH_PRIVATE_KEY"
         echo "::set-output name=key::$SSH_PRIVATE_KEY"
 
-    # - name: Create Secret
-    #   run: |
-    #     export IP_ADDRESS=$(terraform output instance_ip_addr)
-    #     echo "The IP address is: $IP_ADDRESS"
-    #     echo "::set-output name=host::$IP_ADDRESS"
-    #     export SSH_PRIVATE_KEY=$(terraform output tls)
-    #     echo "The SSH Key is: $SSH_PRIVATE_KEY"
-    #     echo "::set-output name=key::$SSH_PRIVATE_KEY"
     - name: Print output and create environment variable
       run: |
         echo "Output variable: ${{ steps.get_output.outputs.host }}"
 
-    # - name: Create Secret
-    #   env:
-    #     IP_ADDRESS: ${{ env.IP_ADDRESS }}
-    #   run: |
-    #     echo "::set-output name=secret_name::HOST"
-    #     echo "::set-output name=secret_value::$IP_ADDRESS"
-    #     echo "Creating secret..."
-
-    # - name: SSH into Virtual Machine
-
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ steps.create_secret.outputs.host }}
-    #     username: ${{ secrets.USER }}
-    #     key: ${{ steps.create_secret.outputs.key }}
-    #     script: |
-    #       echo "Successfully connected to the virtual machine"
-    #       sudo apt-get update
+    - name: SSH into Virtual Machine
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ steps.get_output.outputs.host }}
+        username: ${{ secrets.USER }}
+        key: ${{ steps.get_output.outputs.key }}
+        script: |
+          echo "Successfully connected to the virtual machine"
+          sudo apt-get update
 
     # - name: Create GitHub Secret Action
     #   env:

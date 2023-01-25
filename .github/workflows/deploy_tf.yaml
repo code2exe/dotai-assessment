@@ -12,7 +12,7 @@ env:
     EC2_AMI:   ${{ secrets.EC2_AMI }}
     NAMESPACE: ${{ secrets.NAMESPACE }}
     REPOSITORY: ${{ secrets.REPOSITORY }}
-    TOKEN: ${{ secrets.TOKEN }}
+    GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
     USER: ${{ secrets.USER }}
     # VPC_CIDR_BLOCK: ${{ secrets.VPC_CIDR_BLOCK }}
     # VPC_SUBNET_CIDR: ${{ secrets.VPC_SUBNET_CIDR }}
@@ -43,9 +43,9 @@ jobs:
         # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         # AWS_REGION: ${{ secrets.AWS_REGION }}
-        TOKEN: ${{ secrets.TOKEN }}
+        GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
       run: |
-        TF_LOG=DEBUG terraform plan -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}' -var 'github_token=${TOKEN}' -var 'repository=${REPOSITORY}'
+        TF_LOG=DEBUG terraform plan -var 'github_token=${GIT_TOKEN}' -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}' -var 'repository=${REPOSITORY}'
 
     # - name: Terraform Apply
     #   run: |

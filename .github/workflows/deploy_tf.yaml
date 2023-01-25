@@ -46,11 +46,10 @@ jobs:
         echo "The IP address is: $IP_ADDRESS"
 
     - name: Create Secret
-      env:
-        IP_ADDRESS: ${{ env.IP_ADDRESS }}
       run: |
+        export IP_ADDRESS=$(terraform output instance_ip_addr)
         echo "The IP address is: $IP_ADDRESS"
-        
+
     # - name: Create Secret
     #   env:
     #     IP_ADDRESS: ${{ env.IP_ADDRESS }}
@@ -94,14 +93,14 @@ jobs:
     #   with:
     #     key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: SSH into Virtual Machine
-      # env:
-      #   IP_ADDRESS: ${{ sec }}
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          echo "Successfully connected to the virtual machine"
-          sudo apt-get update
+    # - name: SSH into Virtual Machine
+    #   # env:
+    #   #   IP_ADDRESS: ${{ sec }}
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.HOST }}
+    #     username: ${{ secrets.USER }}
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     script: |
+    #       echo "Successfully connected to the virtual machine"
+    #       sudo apt-get update

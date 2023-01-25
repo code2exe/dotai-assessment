@@ -45,10 +45,10 @@ jobs:
         export IP_ADDRESS=$(terraform output instance_ip_addr)
         echo "The IP address is: $IP_ADDRESS"
 
-    - name: Set up SSH key
-      uses: shimataro/ssh-key-action@v2
-      with:
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+    # - name: Set up SSH key
+    #   uses: shimataro/ssh-key-action@v2
+    #   with:
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: SSH into Virtual Machine
       uses: appleboy/ssh-action@master

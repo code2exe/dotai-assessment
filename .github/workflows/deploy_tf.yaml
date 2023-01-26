@@ -33,11 +33,11 @@ jobs:
 
     - name: Terraform Plan
       run: |
-        terraform plan -var 'pa_token=${{ secrets.GIT_TOKEN }}'  -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${{ secrets.EC2_AMI }}'
+        terraform plan -var 'pa_token=${{ secrets.GIT_TOKEN }}'  -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${{ secrets.EC2_AMI }}' -var 'repository=${{ secrets.REPOSITORY }}'
 
     - name: Terraform Apply
       run: |
-        terraform apply -var 'pa_token=${{ secrets.GIT_TOKEN }}' -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=ami-04bad3c587fe60d89' -auto-approve
+        terraform apply -var 'pa_token=${{ secrets.GIT_TOKEN }}' -var 'namespace=${NAMESPACE}' -var 'repository=${{ secrets.REPOSITORY }} -var 'user=${USER}' -var 'ec2_ami=ami-04bad3c587fe60d89' -auto-approve
 
     - name: Get output
       id: get_output

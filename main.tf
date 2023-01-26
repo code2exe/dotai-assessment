@@ -148,6 +148,8 @@ resource "aws_instance" "instance" {
   user_data = <<EOF
       #!/bin/bash
       sudo apt-get update
+      sudo apt-get install -y make build-essential ruby-full
+      sudo gem install jekyll --version='~> 4.2.0'
       EOF
 
   

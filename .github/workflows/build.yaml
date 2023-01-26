@@ -57,3 +57,23 @@ jobs:
         script: |
           echo "Successfully connected to the virtual machine"
           sudo apt-get update
+          sudo apt-get install --reinstall zlibc zlib1g zlib1g-dev
+
+    - name: Setup Ruby
+      uses: actions/setup-ruby@v2
+      with:
+        ruby-version: 2.7.7
+
+    - name: Install dependencies
+      run: bundle install
+      working-directory: jekyll-bootstrap
+
+    - name: Build Jekyll site
+      run: bundle exec jekyll build -d _gh_pages
+
+    - name: Create version file
+      run: |
+        echo -e "Job: ${{ job.name }} \n Build: ${{ env.GITHUB_RUN_NUMBER }}" > _gh_pages/version.txt
+
+
+

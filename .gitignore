@@ -39,3 +39,10 @@ override.tf.json
 terraform.rc
 
 # End of https://www.toptal.com/developers/gitignore/api/terraform
+
+_site/
+.DS_Store
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+Gemfile.lock

@@ -77,6 +77,7 @@ jobs:
       run: |
         echo -e "Job: ${{ job.name }} \n Build: ${{ env.GITHUB_RUN_NUMBER }}" > _gh_pages/version.txt
         ls
+        cat _gh_pages/version.txt
       working-directory: jekyll-bootstrap
 
 

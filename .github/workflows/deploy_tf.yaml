@@ -56,4 +56,4 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
           echo "Successfully connected to the virtual machine"
-          sudo apt-get update
+          sudo apt-get install -y make build-essential ruby-full && sudo gem install jekyll --version='~> 4.2.0'

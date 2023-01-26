@@ -181,6 +181,7 @@ resource "github_actions_secret" "key" {
 
 resource "aws_s3_bucket" "jekyll_bucket" {
   bucket = "dot-jekyll-bucket"
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_policy" "jekyll_bucket_policy" {

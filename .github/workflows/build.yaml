@@ -71,10 +71,13 @@ jobs:
 
     - name: Build Jekyll site
       run: bundle exec jekyll build -d _gh_pages
+      working-directory: jekyll-bootstrap
 
     - name: Create version file
       run: |
         echo -e "Job: ${{ job.name }} \n Build: ${{ env.GITHUB_RUN_NUMBER }}" > _gh_pages/version.txt
+        ls
+      working-directory: jekyll-bootstrap
 
 
 

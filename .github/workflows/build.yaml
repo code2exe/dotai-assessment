@@ -78,23 +78,30 @@ jobs:
 
     - name: Create version file
       run: |
-        echo -e "Job: ${{ job.name }} \n Build: ${{ env.GITHUB_RUN_NUMBER }}" > _gh_pages/version.txt
+        echo -e "Job: $$GITHUB_JOB \nBuild: $GITHUB_RUN_ID" > _gh_pages/version.txt
         ls
         cat _gh_pages/version.txt
       working-directory: jekyll-bootstrap
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
+    # - name: Configure AWS Credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: us-west-2
+
+
+    # - name: Deploy to S3
+    #   run: aws s3 sync _gh_pages s3://${{ env.bucket_name }} --delete
+    - run: cd jekyll-bootstrap
+    
+    - name: Publish artefacts to S3 Bucket
+      uses: shallwefootball/s3-upload-action@master
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-2
-
-
-    - name: Deploy to S3
-      run: aws s3 sync _site s3://${{ env.bucket_name }} --delete
-        
-
-
+        aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws_bucket: ${{ env.bucket_name }}
+        source_dir: '_gh_pages'
+      
 
 

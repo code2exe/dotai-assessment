@@ -57,7 +57,8 @@ jobs:
         script: |
           echo "Successfully connected to the virtual machine"
           sudo apt-get update
-          sudo apt-get install --reinstall zlibc zlib1g zlib1g-dev
+          sudo apt-get install -y make build-essential ruby-full
+          sudo apt-get install -y --reinstall zlibc zlib1g zlib1g-dev
 
     - uses: ruby/setup-ruby@v1
       with:

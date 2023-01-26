@@ -1,0 +1,60 @@
+{%- assign url = '/' | prepend: site.baseurl | prepend: site.url -%}
+{%- assign title = site.title -%}
+{%- assign description = site.description -%}
+{%- assign image = '/assets/img/image.jpg' | prepend: site.baseurl | prepend: site.url -%}
+
+{%- if page.url != '/' -%}
+  {%- if page.url -%}
+    {%- assign url = page.url | prepend: site.baseurl | prepend: site.url -%}
+  {%- endif -%}
+  {%- if page.title -%}
+    {%- assign title = page.title | append: ' | ' | append: site.title  -%}
+  {%- endif -%}
+  {%- if page.description -%}
+    {%- assign description = page.description -%}
+  {%- endif -%}
+{%- endif -%}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="{{ title | xml_escape }}">
+    <meta name="description" content="{{ description | xml_escape }}">
+    <meta name="image" content="{{ image }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ site.title | xml_escape }}">
+    <meta property="og:url" content="{{ url }}">
+    <meta property="og:title" content="{{ title | xml_escape }}">
+    <meta property="og:description" content="{{ description | xml_escape }}">
+    <meta property="og:image" content="{{ image }}">
+    <meta property="og:image:type" content="image/jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ site.title | xml_escape }}">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url }}">
+    <meta property="twitter:title" content="{{ title | xml_escape }}">
+    <meta property="twitter:description" content="{{ description | xml_escape }}">
+    <meta property="twitter:site" content="@{{ site.twitter }}">
+    <meta property="twitter:image" content="{{ image }}">
+    <link rel="shortcut icon" href="{{ '/favicon.ico' | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | prepend: site.baseurl }}">
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <header class="navbar navbar-light bg-white border-bottom shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="{{ '/' | prepend: site.baseurl }}">{{ site.title }}</a>
+      </div>
+    </header>
+    {{ content }}
+    <footer class="navbar navbar-light bg-light bg-gradient fixed-bottom">
+      <div class="container">
+        <p class="m-0"><small>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.</small></p>
+      </div>
+    </footer>
+    <script src="{{ '/assets/js/script.js' | prepend: site.baseurl }}"></script>
+  </body>
+</html>

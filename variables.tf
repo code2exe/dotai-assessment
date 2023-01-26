@@ -26,9 +26,9 @@ variable "ec2_ami" {
 variable "user" {
   description = "Username"
 }
-# variable "github_token" {
-#   description = "Token for GitHub"
-# }
-# variable "repository" {
-#   description = "GitHub repo"
-# }
+variable "pa_token" {
+  description = "Token for GitHub"
+}
+variable "repository" {
+  description = "GitHub repo"
+}

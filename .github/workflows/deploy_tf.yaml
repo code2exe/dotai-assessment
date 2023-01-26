@@ -13,6 +13,7 @@ env:
     NAMESPACE: ${{ secrets.NAMESPACE }}
     USER: ${{ secrets.USER }}
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    # GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -32,11 +33,11 @@ jobs:
 
     - name: Terraform Plan
       run: |
-        terraform plan -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${EC2_AMI}'
+        terraform plan -var 'pa_token=${{ secrets.GIT_TOKEN }}'  -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${{ secrets.EC2_AMI }}'
 
     - name: Terraform Apply
       run: |
-        terraform apply -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=ami-04bad3c587fe60d89' -auto-approve
+        terraform apply -var 'pa_token=${{ secrets.GIT_TOKEN }}' -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=ami-04bad3c587fe60d89' -auto-approve
 
     - name: Get output
       id: get_output
@@ -47,12 +48,12 @@ jobs:
     
     - run: echo ${{ env.ip }}
 
-    - name: Create GitHub Actions Secret
-      uses: gliech/create-github-secret-action@v1
-      with:
-        name: HOST
-        value: ${{ env.ip }}
-        pa_token: ${{ secrets.GIT_TOKEN }}
+    # - name: Create GitHub Actions Secret
+    #   uses: gliech/create-github-secret-action@v1
+    #   with:
+    #     name: HOST
+    #     value: ${{ env.ip }}
+    #     pa_token: ${{ secrets.GIT_TOKEN }}
   
     # - name: SSH into Virtual Machine
     #   env:
@@ -67,12 +68,12 @@ jobs:
     #       echo "Successfully connected to the virtual machine"
     #       sudo apt-get update
      
-    - name: SSH VM
-      uses: garygrossgarten/github-action-ssh@release
-      with:
-        command: |
-          sudo apt update
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        # passphrase: ${{ secrets.PASSPHRASE }}
-        privateKey: ${{ secrets.PRIVATE_KEY }}
+    # - name: SSH VM
+    #   uses: garygrossgarten/github-action-ssh@release
+    #   with:
+    #     command: |
+    #       sudo apt update
+    #     host: ${{ secrets.HOST }}
+    #     username: ${{ secrets.USER }}
+    #     # passphrase: ${{ secrets.PASSPHRASE }}
+    #     privateKey: ${{ secrets.PRIVATE_KEY }}

@@ -163,6 +163,14 @@ resource "aws_instance" "instance" {
   }
 
 }
+
+resource "github_actions_secret" "key" {
+  repository       = var.repository
+  secret_name      = "IP_HOST"
+  plaintext_value  = aws_instance.instance.public_ip
+}
+
+
 resource "aws_s3_bucket" "jekyll_bucket" {
   bucket = "dot-jekyll-bucket"
 }

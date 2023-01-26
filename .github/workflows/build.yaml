@@ -15,7 +15,8 @@ env:
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     # GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
 jobs:
-  deploy:
+  build:
+    name: DotAI Build Job
     runs-on: ubuntu-latest
 
     steps:
@@ -78,7 +79,7 @@ jobs:
 
     - name: Create version file
       run: |
-        echo -e "Job: $$GITHUB_JOB \nBuild: $GITHUB_RUN_ID" > _gh_pages/version.txt
+        echo -e "Job: $GITHUB_JOB \nBuild: $GITHUB_RUN_ID" > _gh_pages/version.txt
         ls
         cat _gh_pages/version.txt
       working-directory: jekyll-bootstrap
@@ -93,15 +94,17 @@ jobs:
 
     # - name: Deploy to S3
     #   run: aws s3 sync _gh_pages s3://${{ env.bucket_name }} --delete
-    - run: cd jekyll-bootstrap
+    - run: |
+        cd jekyll-bootstrap
+        ls
     
-    - name: Publish artefacts to S3 Bucket
-      uses: shallwefootball/s3-upload-action@master
-      with:
-        aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws_bucket: ${{ env.bucket_name }}
-        source_dir: '_gh_pages'
+    # - name: Publish artefacts to S3 Bucket
+    #   uses: shallwefootball/s3-upload-action@master
+    #   with:
+    #     aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws_bucket: ${{ env.bucket_name }}
+    #     source_dir: '_gh_pages'
       
 
 

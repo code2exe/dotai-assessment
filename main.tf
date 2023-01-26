@@ -145,6 +145,12 @@ resource "aws_instance" "instance" {
   subnet_id              = aws_subnet.subnet.id
   associate_public_ip_address = true
   key_name = data.aws_key_pair.dot.key_name
+  user_data = <<EOF
+      #!/bin/bash
+      sudo apt-get update
+      EOF
+
+  
 #   key_name = aws_key_pair.deployer.key_name
 #   provisioner "remote-exec" {
 #    inline = [

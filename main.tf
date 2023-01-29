@@ -120,7 +120,7 @@ resource "tls_private_key" "instancessh" {
 }
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "doair"
+  key_name   = "dotai"
   public_key = tls_private_key.instancessh.public_key_openssh
 }
 

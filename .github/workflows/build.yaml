@@ -12,8 +12,6 @@ env:
     EC2_AMI:   ${{ secrets.EC2_AMI }}
     NAMESPACE: ${{ secrets.NAMESPACE }}
     USER: ${{ secrets.USER }}
-    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    # GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
 jobs:
   build:
     name: DotAI Build Job
@@ -34,30 +32,27 @@ jobs:
 
     - name: Terraform Plan
       run: |
-        terraform plan -var 'pa_token=${{ secrets.GIT_TOKEN }}'  -var 'namespace=${NAMESPACE}' -var 'user=${USER}' -var 'ec2_ami=${{ secrets.EC2_AMI }}' -var 'repository=${{ secrets.REPOSITORY }}'
+        terraform plan -var 'pa_token=${{ secrets.GIT_TOKEN }}'  -var 'namespace=${{ secrets.NAMESPACE }}' -var 'user=${{ secrets.USER }}' -var 'ec2_ami=${{ secrets.EC2_AMI }}' -var 'repository=${{ secrets.REPOSITORY }}'
 
     - name: Terraform Apply
       run: |
-        terraform apply -var 'pa_token=${{ secrets.GIT_TOKEN }}' -var 'namespace=${NAMESPACE}' -var 'repository=${{ secrets.REPOSITORY }}' -var 'user=${USER}' -var 'ec2_ami=ami-04bad3c587fe60d89' -auto-approve
+        terraform apply -var 'pa_token=${{ secrets.GIT_TOKEN }}' -var 'namespace=${{ secrets.NAMESPACE }}' -var 'repository=${{ secrets.REPOSITORY }}' -var 'user=${{ secrets.USER }}' -var 'ec2_ami=ami-04bad3c587fe60d89' -auto-approve
 
-    - name: Get output
+    - name: Make Terraform output an environment variable
       id: get_output
       run: |
-        export IP_ADDRESS=$(terraform output instance_ip_addr)
         export BUCKET_NAME=$(terraform output s3_bucket_name)
-        echo "The IP address is: $IP_ADDRESS"
         echo "The S3 Bucket Name is: $BUCKET_NAME"
-        echo "ip=$IP_ADDRESS" >> $GITHUB_ENV
         echo "bucket_name=$BUCKET_NAME" >> $GITHUB_ENV
     
-  
+ 
     - name: SSH into Virtual Machine
       id: ssh
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.IP_HOST }}
         username: ${{ secrets.USER }}
-        key: ${{ secrets.PRIVATE_KEY }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           echo "Successfully connected to the virtual machine"
           sudo apt-get update
@@ -80,23 +75,11 @@ jobs:
     - name: Create version file
       run: |
         echo -e "Job: $GITHUB_JOB \nBuild: $GITHUB_RUN_ID" > _gh_pages/version.txt
-        ls
         cat _gh_pages/version.txt
       working-directory: jekyll-bootstrap
 
-    # - name: Configure AWS Credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-region: us-west-2
-
-
-    # - name: Deploy to S3
-    #   run: aws s3 sync _gh_pages s3://${{ env.bucket_name }} --delete
     - run: |
         cd jekyll-bootstrap
-        ls
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -105,18 +88,8 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2
 
-
     - name: Deploy to S3
       run: aws s3 sync _gh_pages s3://${{ env.bucket_name }} --delete
       working-directory: jekyll-bootstrap
-    
-    # - name: Publish artefacts to S3 Bucket
-    #   uses: shallwefootball/s3-upload-action@master
-    #   with:
-    #     aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws_bucket: ${{ env.bucket_name }}
-    #     source_dir: '_gh_pages'
-      
 
 

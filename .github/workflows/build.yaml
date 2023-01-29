@@ -45,6 +45,7 @@ jobs:
         echo "The S3 Bucket Name is: $BUCKET_NAME"
         echo "bucket_name=$BUCKET_NAME" >> $GITHUB_ENV
     
+    - run: sleep 10
  
     - name: SSH into Virtual Machine
       id: ssh
